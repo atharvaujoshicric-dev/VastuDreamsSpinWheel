@@ -139,7 +139,7 @@ else:
     {"label": "75,000 OFF", "icon": "💰"},          # Bottom (Yellow)
     {"label": "50,000 OFF", "icon": "💵"},          # Bottom-Left (Pink)
     {"label": "1 LACS OFF", "icon": "💰"}           # Top-Left (Orange)
-]]
+]
     
     wheel_html = f"""
     <div id="wrapper" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
