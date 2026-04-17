@@ -18,11 +18,11 @@ try:
 except NameError:
     current_dir = Path.cwd()
 
-image_target = current_dir / "wheel.jpg"
+image_target = current_dir / "wheel.png"
 img_base64 = get_image_base64(str(image_target))
 
 if img_base64 is None:
-    st.error("🚨 'wheel.jpg' not found. Please ensure the file is in the same folder as app.py")
+    st.error("🚨 'wheel.png' not found. Please ensure the file is in the same folder as app.py")
 else:
     wheel_html = f"""
     <div id="wrapper" style="text-align: center; background-color: #0f1116; padding: 40px; border-radius: 20px;">
@@ -34,7 +34,7 @@ else:
                 z-index: 100; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
             "></div>
             
-            <img id="wheel" src="data:image/jpeg;base64,{img_base64}" style="
+            <img id="wheel" src="data:image/png;base64,{img_base64}" style="
                 width: 450px; height: 450px;
                 transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
                 border-radius: 50%;
