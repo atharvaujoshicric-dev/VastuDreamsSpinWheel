@@ -78,7 +78,7 @@ with col2:
     st.markdown(f"""
         <div class="wheel-container">
             <div class="pointer"></div>
-            <img src="https://i.ibb.co/ZzH9H9K/wheel.jpg" 
+            <img src="wheel.png" 
                  class="spin-wheel" 
                  style="transform: rotate({st.session_state.rotation}deg);">
         </div>
