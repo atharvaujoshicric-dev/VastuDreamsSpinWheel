@@ -93,15 +93,19 @@ wheel_html = f"""
 
 # Crucial: Streamlit needs to be able to serve the local image.
 # We map the local image to a static path.
-import os
-import base64
+current_dir = os.path.dirname(__file__)
+img_path = os.path.join(current_dir, "wheel.jpg")
 
 def get_image_base64(path):
+    # Check if file exists to avoid the crash you just saw
+    if not os.path.isfile(path):
+        st.error(f"Error: {path} not found. Please ensure wheel.jpg is in the same folder as app.py")
+        return ""
     with open(path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-# Alternative method if 'static' folder isn't configured: Base64 Injection
-img_base64 = get_image_base64("wheel.jpg")
+# Use the absolute path
+img_base64 = get_image_base64(img_path)
 final_html = wheel_html.replace("app/static/wheel.jpg", f"data:image/jpeg;base64,{img_base64}")
 
 # Render the component
