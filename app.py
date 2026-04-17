@@ -24,15 +24,14 @@ img_base64 = get_image_base64(str(image_target))
 if img_base64 is None:
     st.error("🚨 'wheel.jpg' not found. Please ensure the file is in the same folder as app.py")
 else:
-    # Based on the image where "Better luck next time" is at the TOP (12 o'clock)
-    # We list segments CLOCKWISE starting from the top.
+    # Segments mapped clockwise starting from the white segment at the top
     segments = [
-        "Better luck next time", # Top (White)
-        "₹ 1.5 Lacs Off",        # Top-Right (Pink)
-        "₹ 2 Lacs Off",          # Bottom-Right (Orange)
-        "₹ 75,000 Off",         # Bottom (Yellow)
-        "₹ 50,000 Off",          # Bottom-Left (Pink)
-        "₹ 1 Lacs Off"           # Top-Left (Orange)
+        "Better luck next time", 
+        "₹ 1.5 Lacs Off",        
+        "₹ 2 Lacs Off",          
+        "₹ 75,000 Off",         
+        "₹ 50,000 Off",          
+        "₹ 1 Lacs Off"           
     ]
 
     wheel_html = f"""
@@ -53,20 +52,50 @@ else:
             ">
         </div>
         <br><br>
-        <button onclick="spinWheel()" style="
+        <button id="spinBtn" onclick="spinWheel()" style="
             padding: 15px 60px; font-size: 24px; cursor: pointer;
             background: #e31b23; color: white; border: none; border-radius: 10px;
             font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
             box-shadow: 0 6px #9e1217; transition: 0.1s;
-        " onmousedown="this.style.transform='translateY(3px)';this.style.boxShadow='0 3px #9e1217'" 
-           onmouseup="this.style.transform='translateY(0px)';this.style.boxShadow='0 6px #9e1217'">
+        ">
             SPIN WHEEL
         </button>
-        <div style="margin-top: 40px; height: 60px;">
-            <h2 id="result" style="color: white; font-family: sans-serif; font-size: 28px;"></h2>
-        </div>
     </div>
 
-    
+    <script>
+        let currentRotation = 0;
+        let isSpinning = false;
+        const prizeList = {segments};
+
+        function spinWheel() {{
+            if (isSpinning) return;
+            
+            const wheel = document.getElementById('wheel');
+            const btn = document.getElementById('spinBtn');
+            
+            isSpinning = true;
+            btn.style.opacity = "0.5";
+            btn.innerText = "SPINNING...";
+            
+            const randomDegree = Math.floor(Math.random() * 360);
+            const totalRotation = currentRotation + (360 * 10) + randomDegree;
+            currentRotation = totalRotation;
+
+            wheel.style.transform = "rotate(" + totalRotation + "deg)";
+
+            setTimeout(() => {{
+                const landingDegree = (360 - (totalRotation % 360)) % 360;
+                // Add 30 degree offset to land in center of slice
+                const index = Math.floor(((landingDegree + 30) % 360) / 60);
+                
+                // Show result in an alert instead of text on screen
+                alert("CONGRATULATIONS!\\n\\nResult: " + prizeList[index]);
+                
+                isSpinning = false;
+                btn.style.opacity = "1";
+                btn.innerText = "SPIN WHEEL";
+            }}, 5100);
+        }}
+    </script>
     """
-    components.html(wheel_html, height=750)
+    components.html(wheel_html, height=650)
