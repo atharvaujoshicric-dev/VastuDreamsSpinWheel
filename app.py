@@ -7,16 +7,17 @@ from datetime import datetime
 import streamlit.components.v1 as components
 
 # Prize data with ultra-premium color palette - 8 segments
-prizes = [
-    {"label": "AIRPODS APPLE", "img": "🎧", "color": "#0a0a0a", "accent": "#C9A84C", "text": "#C9A84C"},
-    {"label": "BETTER LUCK",   "img": "🍀", "color": "#1C1C1E", "accent": "#8E8E93", "text": "#E5E5EA"},
-    {"label": "SPIN AGAIN",    "img": "🔄", "color": "#101010", "accent": "#C9A84C", "text": "#C9A84C"},
-    {"label": "IPAD APPLE",    "img": "📱", "color": "#1C1C1E", "accent": "#8E8E93", "text": "#E5E5EA"},
-    {"label": "REFRIGERATOR",  "img": "🧊", "color": "#0a0a0a", "accent": "#C9A84C", "text": "#C9A84C"},
-    {"label": "BETTER LUCK",   "img": "✨", "color": "#1C1C1E", "accent": "#8E8E93", "text": "#E5E5EA"},
-    {"label": "SPIN AGAIN",    "img": "🔄", "color": "#101010", "accent": "#C9A84C", "text": "#C9A84C"},
-    {"label": "SPLIT AC",      "img": "❄️", "color": "#1C1C1E", "accent": "#8E8E93", "text": "#E5E5EA"},
-]
+# UPDATED PRIZES FROM PDF
+    prizes = [
+        {"label": "75,000 OFF", "icon": "💰"},              # [cite: 3]
+        {"label": "50,000 OFF", "icon": "💵"},              # [cite: 4, 5]
+        {"label": "VAASTU DREAMS OFF", "icon": "🏠"},       # [cite: 6, 7, 8]
+        {"label": "2 LACS OFF", "icon": "💎"},               # [cite: 9]
+        {"label": "1 LACS OFF", "icon": "💰"},               # [cite: 10]
+        {"label": "1.5 LACS OFF", "icon": "💵"},             # [cite: 11, 12]
+        {"label": "BETTER LUCK NEXT TIME", "icon": "❌"},   # [cite: 13]
+        {"label": "SPIN AGAIN", "icon": "🔄"}               # (Keep one for engagement)
+    ]
 
 st.set_page_config(page_title="SKYLUXE — Wheel of Fortune", layout="centered")
 
