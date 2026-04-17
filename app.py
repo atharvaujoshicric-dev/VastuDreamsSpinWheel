@@ -8,7 +8,7 @@ import streamlit.components.v1 as components
 
 # Prize data with ultra-premium color palette - 8 segments
 # UPDATED PRIZES FROM PDF
-    prizes = [
+prizes = [
         {"label": "75,000 OFF", "icon": "💰"},              # [cite: 3]
         {"label": "50,000 OFF", "icon": "💵"},              # [cite: 4, 5]
         {"label": "VAASTU DREAMS OFF", "icon": "🏠"},       # [cite: 6, 7, 8]
