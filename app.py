@@ -67,36 +67,6 @@ else:
         </div>
     </div>
 
-    <script>
-        let currentRotation = 0;
-        const prizeList = {segments};
-
-        function spinWheel() {{
-            const wheel = document.getElementById('wheel');
-            const resultText = document.getElementById('result');
-            
-            resultText.innerHTML = ""; // Clear previous result
-            
-            // Random degree for the landing
-            const randomDegree = Math.floor(Math.random() * 360);
-            // 8 full rotations + the random landing
-            const totalRotation = currentRotation + (360 * 8) + randomDegree;
-            currentRotation = totalRotation;
-
-            wheel.style.transform = "rotate(" + totalRotation + "deg)";
-
-            setTimeout(() => {{
-                // Math: We need to find what degree is at the 0° position (top).
-                // Since the wheel turns clockwise, we subtract the remainder from 360.
-                const landingDegree = (360 - (totalRotation % 360)) % 360;
-                
-                // Each slice is 60 degrees. 
-                // We add a 30 degree offset to ensure we are picking the center of the slice.
-                const index = Math.floor(((landingDegree + 30) % 360) / 60);
-                
-                resultText.innerHTML = "WINNER: <span style='color:#e31b23'>" + prizeList[index] + "</span>";
-            }}, 5000);
-        }}
-    </script>
+    
     """
     components.html(wheel_html, height=750)
