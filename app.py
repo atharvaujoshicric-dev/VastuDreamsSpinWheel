@@ -1,94 +1,108 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import random
-import time
 
-# --- Page Config ---
+# Page configuration
 st.set_page_config(page_title="Vaastu Dreams Spin Wheel", layout="centered")
 
-# --- Custom CSS for Animation ---
-def local_css():
-    st.markdown("""
-        <style>
-        .wheel-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            height: 500px;
-        }
-        .spin-wheel {
-            width: 450px;
-            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
-            border-radius: 50%;
-        }
-        .pointer {
+st.title("🎡 Vaastu Dreams III - Lucky Spin")
+
+# Define the segments based on your image (clockwise starting from top)
+segments = [
+    "₹ 50,000 Off",
+    "₹ 1 Lacs Off",
+    "Better luck next time",
+    "₹ 1.5 Lacs Off",
+    "₹ 2 Lacs Off",
+    "₹ 75,000 Off"
+]
+
+# JavaScript/CSS for the wheel logic
+# We use a CSS transform to rotate the image
+wheel_html = f"""
+<div id="wrapper" style="text-align: center; font-family: sans-serif;">
+    <div class="container" style="position: relative; display: inline-block;">
+        <div id="pointer" style="
             position: absolute;
-            top: 10px;
-            z-index: 10;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
             width: 0; 
             height: 0; 
             border-left: 20px solid transparent;
             border-right: 20px solid transparent;
             border-top: 40px solid #FFD700;
-            filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.5));
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-local_css()
-
-st.title("🎡 Vaastu Dreams III Lucky Spin")
-
-# --- State Management ---
-if 'rotation' not in st.session_state:
-    st.session_state.rotation = 0
-if 'winner' not in st.session_state:
-    st.session_state.winner = None
-
-# --- Spin Logic ---
-def spin():
-    # Add a large random rotation (at least 5 full circles + random offset)
-    extra_spin = random.randint(1800, 3600)
-    st.session_state.rotation += extra_spin
+            z-index: 10;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+        "></div>
+        
+        <img id="wheel" src="app/static/wheel.jpg" style="
+            width: 400px;
+            height: 400px;
+            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
+            border-radius: 50%;
+        ">
+    </div>
     
-    # Calculate winner based on final angle
-    # The wheel has 6 segments (60 degrees each)
-    final_angle = st.session_state.rotation % 360
+    <br><br>
+    <button onclick="spinWheel()" style="
+        padding: 15px 40px;
+        font-size: 20px;
+        cursor: pointer;
+        background-color: #e63946;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        box-shadow: 0 4px #9b2226;
+    ">SPIN NOW</button>
     
-    # Map angles to segments (Adjust these based on image alignment)
-    # 0 deg is top, segments go clockwise
-    if 0 <= final_angle < 60:
-        st.session_state.winner = "₹ 1 Lacs Off"
-    elif 60 <= final_angle < 120:
-        st.session_state.winner = "Better luck next time"
-    elif 120 <= final_angle < 180:
-        st.session_state.winner = "₹ 1.5 Lacs Off"
-    elif 180 <= final_angle < 240:
-        st.session_state.winner = "₹ 2 Lacs Off"
-    elif 240 <= final_angle < 300:
-        st.session_state.winner = "₹ 75,000 Off"
-    else:
-        st.session_state.winner = "₹ 50,000 Off"
+    <h2 id="result" style="margin-top: 30px; color: #333;"></h2>
+</div>
 
-# --- UI Components ---
-col1, col2, col3 = st.columns([1, 2, 1])
+<script>
+    let currentRotation = 0;
+    const segments = {segments};
+    
+    function spinWheel() {{
+        const wheel = document.getElementById('wheel');
+        const resultText = document.getElementById('result');
+        
+        // Reset result text
+        resultText.innerHTML = "Spinning...";
+        
+        // Calculate a random rotation (at least 5 full spins + random angle)
+        const extraDegree = Math.floor(Math.random() * 360);
+        const totalDegree = currentRotation + 1800 + extraDegree;
+        currentRotation = totalDegree;
+        
+        wheel.style.transform = "rotate(" + totalDegree + "deg)";
+        
+        // Calculate which segment it landed on
+        // 360 / 6 segments = 60 degrees per segment
+        // We subtract the rotation from 360 because the wheel spins clockwise
+        setTimeout(() => {{
+            const actualDegree = extraDegree % 360;
+            // Offset calculation: The pointer is at the top (0 deg). 
+            // We need to account for the image orientation.
+            const index = Math.floor(((360 - actualDegree) % 360) / 60);
+            resultText.innerHTML = "Congratulations! You won: <br><strong>" + segments[index] + "</strong>";
+        }}, 4000);
+    }}
+</script>
+"""
 
-with col2:
-    # Display the wheel with dynamic rotation
-    st.markdown(f"""
-        <div class="wheel-container">
-            <div class="pointer"></div>
-            <img src="wheel.png" 
-                 class="spin-wheel" 
-                 style="transform: rotate({st.session_state.rotation}deg);">
-        </div>
-    """, unsafe_allow_html=True)
+# Crucial: Streamlit needs to be able to serve the local image.
+# We map the local image to a static path.
+import os
+import base64
 
-    st.button("SPIN THE WHEEL", on_click=spin, use_container_width=True)
+def get_image_base64(path):
+    with open(path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
 
-# --- Result Display ---
-if st.session_state.winner:
-    # Wait for animation to finish visually
-    time.sleep(0.5) 
-    st.balloons()
-    st.success(f"### Congratulations! You won: {st.session_state.winner}")
+# Alternative method if 'static' folder isn't configured: Base64 Injection
+img_base64 = get_image_base64("wheel.jpg")
+final_html = wheel_html.replace("app/static/wheel.jpg", f"data:image/jpeg;base64,{img_base64}")
+
+# Render the component
+components.html(final_html, height=600)
