@@ -6,14 +6,15 @@ import json
 from datetime import datetime
 import streamlit.components.v1 as components
 
-# Prize data matching your 6-segment wheel clockwise
+# Prize data matching the image clockwise starting from the segment at 0-60 degrees
+# According to your image, the yellow segment is now at the top-right (0 to 60 deg)
 prizes = [
-    {"label": "BETTER LUCK NEXT TIME", "icon": "❌"}, # Index 0 (Top Center)
-    {"label": "1.5 LACS OFF", "icon": "💵"},         # Index 1
-    {"label": "2 LACS OFF", "icon": "💎"},           # Index 2
-    {"label": "75,000 OFF", "icon": "💰"},          # Index 3
-    {"label": "50,000 OFF", "icon": "💵"},          # Index 4
-    {"label": "1 LACS OFF", "icon": "💰"}           # Index 5
+    {"label": "75,000 OFF", "icon": "💰"},          # 0-60 deg (Yellow)
+    {"label": "50,000 OFF", "icon": "💵"},          # 60-120 deg (Pink)
+    {"label": "1 LACS OFF", "icon": "💰"},           # 120-180 deg (Orange)
+    {"label": "BETTER LUCK NEXT TIME", "icon": "❌"}, # 180-240 deg (White)
+    {"label": "1.5 LACS OFF", "icon": "💵"},         # 240-300 deg (Pink)
+    {"label": "2 LACS OFF", "icon": "💎"}            # 300-360 deg (Orange)
 ]
 
 st.set_page_config(page_title="VASTU DREAMS III — Wheel of Fortune", layout="centered")
@@ -101,7 +102,7 @@ else:
     <div id="wrapper" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <div id="pointer" style="width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 24px solid #C9A84C; z-index: 100; margin-bottom: -15px;"></div>
 
-        <div id="wheel-container" style="position: relative; width: 320px; height: 320px; border-radius: 50%; border: 6px solid #C9A84C; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+        <div id="wheel-container" style="position: relative; width: 330px; height: 330px; border-radius: 50%; border: 7px solid #C9A84C; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center;">
             <img id="wheel-img" src="data:image/png;base64,{wheel_base64}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 6s cubic-bezier(0.1, 0, 0, 1); transform: rotate(0deg);">
         </div>
 
@@ -121,7 +122,7 @@ else:
     btn.addEventListener('click', () => {{
         if(btn.disabled) return;
         btn.disabled = true;
-        display.innerText = "SPINNING...";
+        display.innerText = "DETERMINING YOUR LUCK...";
         
         const randomDegree = Math.floor(Math.random() * 360);
         currentRotation += 1800 + randomDegree; 
@@ -131,14 +132,12 @@ else:
             const numSlices = 6;
             const sliceDeg = 360 / numSlices;
             
-            // Normalize rotation to 0-359
+            // MATH ADJUSTMENT FOR YOUR IMAGE:
+            // The boundary is at the top, so index 0 starts at 0 degrees.
             const netRotation = (currentRotation % 360);
-            
-            // MATH FIX: Calculate index without the 8-segment offset. 
-            // We use (360 - netRotation) to find which part of the wheel is at the top.
             const winningIndex = Math.floor(((360 - netRotation) % 360) / sliceDeg);
-            const winner = prizes[winningIndex];
             
+            const winner = prizes[winningIndex];
             display.innerText = "🎉 " + winner.label + " 🎉";
             
             if (winner.label !== "BETTER LUCK NEXT TIME") {{
@@ -154,7 +153,3 @@ else:
     </script>
     """
     components.html(wheel_html, height=500)
-
-if st.button("LOGOUT"):
-    st.session_state.winner_name = ""
-    st.rerun()
