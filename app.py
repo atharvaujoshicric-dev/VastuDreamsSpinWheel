@@ -135,15 +135,16 @@ else:
     """, unsafe_allow_html=True)
 
     # ACCURATE ORDER FROM TOP (0 DEGREES) CLOCKWISE
+    # UPDATED PRIZES FROM PDF
     prizes = [
-        {"label": "APPLE IPAD", "icon": "📱"},              # 0 deg (Top)
-        {"label": "BETTER LUCK NEXT TIME", "icon": "❌"},  # 45 deg
-        {"label": "SPIN AGAIN", "icon": "🔄"},             # 90 deg
-        {"label": "DOUBLE DOOR REFRIGERATOR", "icon": "❄️"}, # 135 deg
-        {"label": "SPLIT AIR CONDITIONER", "icon": "💨"},   # 180 deg (Bottom)
-        {"label": "BETTER LUCK NEXT TIME", "icon": "❌"},  # 225 deg
-        {"label": "APPLE AIRPODS", "icon": "🎧"},          # 270 deg (Left)
-        {"label": "SPIN AGAIN", "icon": "🔄"}              # 315 deg
+        {"label": "75,000 OFF", "icon": "💰"},              # [cite: 3]
+        {"label": "50,000 OFF", "icon": "💵"},              # [cite: 4, 5]
+        {"label": "VAASTU DREAMS OFF", "icon": "🏠"},       # [cite: 6, 7, 8]
+        {"label": "2 LACS OFF", "icon": "💎"},               # [cite: 9]
+        {"label": "1 LACS OFF", "icon": "💰"},               # [cite: 10]
+        {"label": "1.5 LACS OFF", "icon": "💵"},             # [cite: 11, 12]
+        {"label": "BETTER LUCK NEXT TIME", "icon": "❌"},   # [cite: 13]
+        {"label": "SPIN AGAIN", "icon": "🔄"}               # (Keep one for engagement)
     ]
     
     wheel_html = f"""
